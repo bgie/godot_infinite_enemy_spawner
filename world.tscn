@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://dlxl7214kgppk"]
+
+[ext_resource type="Texture2D" uid="uid://bsum801ila6ap" path="res://assets/seamless-1807373_640.jpg" id="1_aqk2v"]
+[ext_resource type="PackedScene" uid="uid://0k2olavtvt8" path="res://player.tscn" id="1_f3sb7"]
+[ext_resource type="Script" uid="uid://bwwgjgd210abq" path="res://background.gd" id="2_036b0"]
+[ext_resource type="PackedScene" uid="uid://twvry0sshmms" path="res://enemy.tscn" id="5_036b0"]
+
+[node name="World" type="Node2D"]
+texture_filter = 3
+
+[node name="Background" type="Sprite2D" parent="."]
+modulate = Color(0.37120485, 0.21014711, 0.1619465, 1)
+texture_filter = 1
+texture_repeat = 2
+texture = ExtResource("1_aqk2v")
+region_enabled = true
+region_rect = Rect2(0, 0, 1280, 1280)
+script = ExtResource("2_036b0")
+
+[node name="Units" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Player" parent="Units" instance=ExtResource("1_f3sb7")]
+
+[node name="Camera2D" type="Camera2D" parent="Units/Player"]
+zoom = Vector2(4, 4)
+
+[node name="Enemy" parent="Units" node_paths=PackedStringArray("target") instance=ExtResource("5_036b0")]
+position = Vector2(-76, 40)
+target = NodePath("../Player")
