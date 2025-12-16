@@ -15,6 +15,17 @@ run/main_scene="uid://dlxl7214kgppk"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[global_group]
+
+hostile="All hostile units"
+
+[layer_names]
+
+2d_physics/layer_1="Player Health"
+2d_physics/layer_2="Enemy Health"
+2d_physics/layer_3="Player Attack"
+2d_physics/layer_4="Enemy Attack"
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

@@ -1,11 +1,11 @@
-[gd_scene load_steps=16 format=3 uid="uid://0k2olavtvt8"]
+[gd_scene load_steps=15 format=3 uid="uid://0k2olavtvt8"]
 
 [ext_resource type="Texture2D" uid="uid://vy2f62l7wtuj" path="res://assets/knight and dummy idle spritesheet.png" id="1_4flbx"]
 [ext_resource type="Script" uid="uid://cwmd0csl25qd5" path="res://player.gd" id="1_onrkg"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fj7yv"]
 radius = 3.0
-height = 24.0
+height = 22.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4flbx"]
 atlas = ExtResource("1_4flbx")
@@ -18,10 +18,6 @@ region = Rect2(80, 120, 40, 40)
 [sub_resource type="AtlasTexture" id="AtlasTexture_b26j0"]
 atlas = ExtResource("1_4flbx")
 region = Rect2(120, 120, 40, 40)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_n7ghd"]
-atlas = ExtResource("1_4flbx")
-region = Rect2(0, 120, 40, 40)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_onrkg"]
 atlas = ExtResource("1_4flbx")
@@ -53,18 +49,15 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_4flbx")
 }, {
-"duration": 1.0,
+"duration": 2.0,
 "texture": SubResource("AtlasTexture_dw050")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_b26j0")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_n7ghd")
 }],
 "loop": false,
 "name": &"attack",
-"speed": 6.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 12.0,
@@ -96,12 +89,15 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nvl01"]
-height = 32.0
+radius = 7.7781754
+height = 28.284275
 
 [node name="Player" type="Node2D"]
 script = ExtResource("1_onrkg")
 
 [node name="HitboxArea2D" type="Area2D" parent="."]
+collision_mask = 8
+monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxArea2D"]
 position = Vector2(0, -2)
@@ -114,11 +110,14 @@ position = Vector2(7, -18)
 sprite_frames = SubResource("SpriteFrames_ic0uy")
 animation = &"attack"
 autoplay = "idle"
-frame = 1
+frame = 2
+frame_progress = 1.0
 
 [node name="HurtArea2D" type="Area2D" parent="."]
-collision_layer = 2
+collision_layer = 4
 collision_mask = 2
+monitoring = false
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtArea2D"]
 position = Vector2(10, -11)
@@ -127,4 +126,8 @@ shape = SubResource("CapsuleShape2D_nvl01")
 debug_color = Color(0.90066105, 0.29293174, 0.2852199, 0.41960785)
 
 [node name="AttackCooldownTimer" type="Timer" parent="."]
+wait_time = 0.3
 one_shot = true
+
+[connection signal="area_entered" from="HurtArea2D" to="." method="_on_hurt_area_2d_area_entered"]
+[connection signal="timeout" from="AttackCooldownTimer" to="." method="_on_attack_cooldown_timer_timeout"]

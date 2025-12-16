@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://bsum801ila6ap" path="res://assets/seamless-1807373_640.jpg" id="1_aqk2v"]
 [ext_resource type="PackedScene" uid="uid://0k2olavtvt8" path="res://player.tscn" id="1_f3sb7"]
 [ext_resource type="Script" uid="uid://bwwgjgd210abq" path="res://background.gd" id="2_036b0"]
-[ext_resource type="PackedScene" uid="uid://twvry0sshmms" path="res://enemy.tscn" id="5_036b0"]
+[ext_resource type="Script" uid="uid://doi8cq0vtjsjk" path="res://enemy_spawner.gd" id="4_aqk2v"]
 
 [node name="World" type="Node2D"]
 texture_filter = 3
@@ -25,6 +25,12 @@ y_sort_enabled = true
 [node name="Camera2D" type="Camera2D" parent="Units/Player"]
 zoom = Vector2(4, 4)
 
-[node name="Enemy" parent="Units" node_paths=PackedStringArray("target") instance=ExtResource("5_036b0")]
-position = Vector2(-76, 40)
-target = NodePath("../Player")
+[node name="EnemySpawner" type="Timer" parent="." node_paths=PackedStringArray("enemies_container", "player")]
+wait_time = 2.0
+autostart = true
+script = ExtResource("4_aqk2v")
+enemies_container = NodePath("../Units")
+player = NodePath("../Units/Player")
+spawn_distance = 180
+
+[connection signal="timeout" from="EnemySpawner" to="EnemySpawner" method="_on_timeout"]
